@@ -1,5 +1,5 @@
-const userModel = require('../model/userModel.js')
-const user=require('../model/userModel.js')
+const userModel = require('../model/EmpolyeesModel.js')
+const user=require('../model/EmpolyeesModel.js')
 
 // const index=(req,res)=>{
 //     console.log("hello")
@@ -22,10 +22,11 @@ const index=(req,res)=>{
 
 const show=(req,res,next)=>{
     let UserId=user.findById(req.body.id)
-    console.log(UserId)
+    // console.log(UserId)
     
     user.findById(req.body.id).then((response)=>
     {
+        console.log(response)
              return res.status(200).json({
                 response
              })
@@ -69,20 +70,30 @@ const Delete=(req,res,next)=>{
 }
 
 const store=(req,res,next)=>{
-   
+   console.log(req.files,"___________")
      let userModel= new user(
      {
         name:req.body.name,
         department: req.body.department
      })
 
-     if(req.file)
+     if(req.files)
      {
-        userModel.avatar =req.file.path
+        
+        let path = ''
+        req.files.forEach((files,index,arr)=>
+         {
+          path= path+files.path + ','  
+        });
+        
+        path=path.substring(0,path.lastIndexOf(","))
+        console.log(path)
+        userModel.avatar=path
      }
 
      userModel.save().then((response)=>
      {
+        
               return res.status(200).json({
                  response
               })

@@ -4,17 +4,20 @@ const dotenv = require("dotenv").config();
 const app = express();
 
 const port = process.env.PORT || 5000;
-const UserSchema = require("./model/userModel");
+const UserSchema = require("./model/EmpolyeesModel");
 const  dbmon = require("./db/Mongoose");
 const userRouter= require("./router/router");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const auth= require('./router/auth')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.json());
 app.use("/api/user",userRouter)
 app.use('/uploads',express.static('uploads'))
+app.use('/api',auth)
+
 app.post("/hello", async (req, res) => {
     
   try {
